@@ -1,5 +1,7 @@
+import os
 import requests
 from pathlib import Path
+from PIL import Image
 
 
 def get_image(url):
@@ -81,6 +83,21 @@ def get_hubble_collection_ids(collection_name):
 
     return ids
 
+def resize_images(images_path, image_resolution):
+    resized_images_folder_name = 'resized_images'
+    resized_images_path = images_path + resized_images_folder_name + '/'
+    Path(resized_images_path).mkdir(parents=True, exist_ok=True)
+
+    images_names = os.listdir(images_path)
+    images_names.remove(resized_images_folder_name)
+
+    for image_name in images_names:
+        image = Image.open(images_path + image_name)
+        image.thumbnail(image_resolution)
+        resized_image_name = 'resized_{}.jpg'.format(image_name.split('.')[0])
+
+        rgb_im = image.convert('RGB')
+        rgb_im.save(resized_images_path + resized_image_name , format="JPEG")
 
 def main():
     images_path = "images/"
@@ -103,6 +120,8 @@ def main():
                            images_path,
                            save_image)
 
+    image_resolution = (1080, 1080)
+    resize_images(images_path, image_resolution)
 
 if __name__ == '__main__':
     main()
