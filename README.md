@@ -22,6 +22,8 @@ More info:
 python3 fetch_hubble.py -h
 ```
 
+All images are downloaded to the images folder of your script root directory.
+
 ### How to install
 
 Python3 should be already installed. 
