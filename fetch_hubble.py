@@ -1,5 +1,7 @@
+import argparse
 import requests
 
+from main import IMAGES_PATH
 from main import get_image
 from main import get_file_extension
 from main import save_image
@@ -42,16 +44,20 @@ def get_hubble_collection_ids(collection_name):
     return ids
 
 def main():
-    images_path = "images/"
+    parser = argparse.ArgumentParser(
+        description='This script downloads images from hubble telescope.'
+    )
+    parser.add_argument('-c', '--collection_name', help='Input name of hubble images collection. Default: "news" collection')
+    args = parser.parse_args()
 
-    collection_name = 'news'
+    collection_name = args.collection_name if args.collection_name else 'news'
     hubble_image_ids = get_hubble_collection_ids(collection_name)
     for image_id in hubble_image_ids:
         fetch_hubble_image(image_id,
                            get_hubble_image_links,
                            get_image,
                            get_file_extension,
-                           images_path,
+                           IMAGES_PATH,
                            save_image)
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@ from pathlib import Path
 from PIL import Image
 
 
+IMAGES_PATH = "images/"
+
 def get_image(url):
     url = url
     response = requests.get(url, verify=False)
@@ -42,10 +44,8 @@ def resize_images(images_path, image_resolution):
         rgb_im.save(resized_images_path + resized_image_name , format="JPEG")
 
 def main():
-    images_path = "images/"
-
     image_resolution = (1080, 1080)
-    resize_images(images_path, image_resolution)
+    resize_images(IMAGES_PATH, image_resolution)
 
 if __name__ == '__main__':
     main()

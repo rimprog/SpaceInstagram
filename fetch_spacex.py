@@ -1,5 +1,7 @@
+import argparse
 import requests
 
+from main import IMAGES_PATH
 from main import get_image
 from main import save_image
 
@@ -27,12 +29,16 @@ def fetch_spacex_images(url,
         save_image(image, filename, images_path)
 
 def main():
-    images_path = "images/"
+    parser = argparse.ArgumentParser(
+        description='This script downloads images from launching spacex.'
+    )
+    parser.add_argument('--url', help='Spacex_api_launch_url. Default: https://api.spacexdata.com/v3/launches/latest')
+    args = parser.parse_args()
 
-    url = 'https://api.spacexdata.com/v3/launches/latest'
+    url = args.url if args.url else 'https://api.spacexdata.com/v3/launches/latest'
     fetch_spacex_images(url,
                         get_spacex_images_links,
-                        images_path,
+                        IMAGES_PATH,
                         get_image,
                         save_image)
 
