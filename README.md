@@ -24,6 +24,22 @@ python3 fetch_hubble.py -h
 
 All images are downloaded to the images folder of your script root directory.
 
+Script prepare_images.py resizes downloads images. All images must be in the images folder of your script root directory. By default, script resize all images at a width of 1080 and heigth of 1080. Resized images stored in resized_images folder into your '''./image folder'''. You can pass width and height on the command line. Use optional arguments --width and --height
+
+```
+python3 prepare_images.py --width 1080 --height 1080
+```
+
+More info: 
+```
+python3 prepare_images.py -h
+```
+
+Script main.py launch all scripts together by default. First it download spacex images, then download hubble images. And last it resize downloaded images.
+```
+python3 main.py
+```
+
 ### How to install
 
 Python3 should be already installed. 

@@ -1,10 +1,10 @@
 import argparse
 import requests
 
-from main import IMAGES_PATH
-from main import get_image
-from main import get_file_extension
-from main import save_image
+from prepare_images import IMAGES_PATH
+from prepare_images import get_image
+from prepare_images import get_file_extension
+from prepare_images import save_image
 
 
 def get_hubble_image_links(image_id):
@@ -16,6 +16,7 @@ def get_hubble_image_links(image_id):
     hubble_image_links = ['http:{}'.format(image_link['file_url']) for image_link in hubble_image_links]
 
     return hubble_image_links
+
 
 def fetch_hubble_image(image_id,
                        get_hubble_image_links,
@@ -33,15 +34,17 @@ def fetch_hubble_image(image_id,
 
     save_image(hubble_image, filename, images_path)
 
+
 def get_hubble_collection_ids(collection_name):
     url = 'http://hubblesite.org/api/v3/images/{}'.format(collection_name)
 
     response = requests.get(url, verify=False)
     collection = response.json()
 
-    ids = [collection_element['id'] for collection_element in collection]
+    hubble_images_ids = [collection_element['id'] for collection_element in collection]
 
-    return ids
+    return hubble_images_ids
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -51,14 +54,15 @@ def main():
     args = parser.parse_args()
 
     collection_name = args.collection_name if args.collection_name else 'news'
-    hubble_image_ids = get_hubble_collection_ids(collection_name)
-    for image_id in hubble_image_ids:
+    hubble_images_ids = get_hubble_collection_ids(collection_name)
+    for image_id in hubble_images_ids:
         fetch_hubble_image(image_id,
                            get_hubble_image_links,
                            get_image,
                            get_file_extension,
                            IMAGES_PATH,
                            save_image)
+
 
 if __name__ == '__main__':
     main()
